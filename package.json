@@ -1,0 +1,52 @@
+{
+  "name": "rabin",
+  "version": "1.0.0",
+  "description": "reabin's website",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production",
+    "watch": "webpack --watch --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Knightcandy/website.git"
+  },
+  "keywords": [
+    "website",
+    "rabin"
+  ],
+  "author": "rabin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Knightcandy/website/issues"
+  },
+  "homepage": "https://github.com/Knightcandy/website#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "autoprefixer": "^9.5.1",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "file-loader": "^3.0.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "imagemin": "^5.0.0",
+    "img-loader": "^3.0.1",
+    "mini-css-extract-plugin": "^0.6.0",
+    "node-sass": "^4.11.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.1"
+  },
+  "dependencies": {
+    "three": "^0.103.0"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ]
+}
