@@ -23,11 +23,6 @@ import {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // var music = new Audio(music_Earthquake);
-
-    // document.addEventListener('click',()=>{
-    //     music.play();
-    // })
 
     var sound = new Howl({
         src: [music],
@@ -94,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var preloader = document.querySelector('.preloader');
     var preloaderPortal = document.querySelector('.preloader-portal');
-    var preloaderBack = document.querySelector('.preloader-background');
 
     function preloaderTimeline() {
         var Tween_preloader = new TimelineMax({
@@ -103,42 +97,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
         Tween_preloader.to(
-            preloaderBack,
-            0.5, {
-                rotation: 240,
-                transformOrigin: "50% 50%",
-                scale: 0.7,
-                zIndex: 1100,
-                borderRadius: "60% 70% 20% 50%",
-                ease: Power2.easeOut,
-            },
-            1
-        ).to(
-            preloaderBack,
-            0.2, {
-                rotation: 480,
-                transformOrigin: "50% 50%",
-                scale: 0.4,
-                zIndex: 1300,
-                borderRadius: "60% 85% 45% 75%",
-                ease: Power2.easeOut,
-            },
-            1.5
-        ).to(
-            preloaderBack,
-            0.3, {
-                rotation: 720,
-                transformOrigin: "50% 50%",
-                scale: 0,
-                zIndex: 1300,
-                borderRadius: "80% 80% 80% 80%",
-                ease: Power2.easeOut,
-            },
-            1.7
-        ).to(
             preloaderPortal,
             0.3, {
-                scale: 0
+                scale: 10
             },
             2
         )
@@ -216,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
         paused: true,
         onComplete: function () {
             homeTimelineEntry.play();
-            document.addEventListener('mouseover', playSound);
+            // document.addEventListener('mouseover', playSound);
         }
     }).add(preloaderTimeline()).add(navIconTimeline()).add(dotIconsTimeline());
 
@@ -357,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var Tween_skillLine = new TimelineMax();
         Tween_skillLine.staggerTo(
             skillLine,
-            0.3, {
+            0.2, {
                 scale: 0,
                 autoAlpha: 0,
                 ease: Power2.easeIn

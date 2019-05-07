@@ -78,13 +78,98 @@ body {
 
 		&-background {
 			position: absolute;
+			// position: relative;
 			width: 100%;
 			height: 100%;
 			top: 0;
 			left: 0;
-			background-color: #fff;
 			background-color: #9900ff;
 			z-index: 1100;
+			animation: suckedIn_general 0.8s cubic-bezier(0.04, 1.62, 0.99, -0.41) 0.5s forwards;
+			transform-origin: center;
+		}
+
+		&-background-right,
+		&-background-left {
+			position: absolute;
+			width: 50%;
+			height: 50%;
+			background-color: #9900ff;
+			animation: suckedIn_child 0.8s cubic-bezier(0.04, 1.62, 0.99, -0.41) 0.5s forwards;
+		}
+
+		&-background-right {
+			left: 0;
+			top: 50%;
+			transform-origin: top right;
+		}
+
+		&-background-left {
+			left: 50%;
+			top: 0;
+			transform-origin: bottom left;
+		}
+
+		@keyframes suckedIn_general {
+			0% {
+				transform: skew(0deg) scale(1);
+				z-index: 1100;
+				opacity: 1;
+			}
+
+			50% {
+				transform: skew(20deg) scale(0.75);
+				z-index: 1100;
+			}
+
+			55% {
+				transform: skew(35deg) scale(0.45);
+				z-index: 1300;
+				opacity: 1;
+			}
+
+			90% {
+				transform: skew(40deg) scale(0.08);
+				z-index: 1300;
+				opacity: 0.5;
+			}
+
+			100% {
+				transform: skew(45deg) scale(0.02);
+				z-index: 1300;
+				opacity: 0;
+			}
+		}
+
+		@keyframes suckedIn_child {
+			0% {
+				transform: skew(0deg) scale(1);
+				z-index: 1100;
+				opacity: 1;
+			}
+
+			50% {
+				transform: skew(-25deg) scale(0.75);
+				z-index: 1100;
+			}
+
+			55% {
+				transform: skew(-35deg) scale(0.45);
+				z-index: 1300;
+				opacity: 1;
+			}
+
+			90% {
+				transform: skew(-40deg) scale(0.08);
+				z-index: 1300;
+				opacity: 0.5;
+			}
+
+			100% {
+				transform: skew(-45deg) scale(0.02);
+				z-index: 1300;
+				opacity: 0;
+			}
 		}
 
 		&-portal {
@@ -95,24 +180,55 @@ body {
 			left: 50%;
 			transform: translate(-50%, -50%);
 			border-radius: 50%;
-			background-image: radial-gradient(circle, #2b2b30, #141415);
-			box-shadow: 0 0 12px 2px #fff, inset 0 0 6px 2px #fff;
-			animation: portal 0.5s 0.2s cubic-bezier(0.46,-0.1, 0.09, 1.43) forwards;
+			background-image: radial-gradient(circle, #000, #141415 85%);
+			box-shadow: 0 0 6px 2px #fff, inset 0 0 12px 2px #aaa;
+			animation: portal 0.5s 0.2s cubic-bezier(0.46, -0.1, 0.09, 1.43) forwards;
 			z-index: 1200;
+		}
 
-			@keyframes portal {
-				0% {
-					width: 0;
-					height: 0;
-				}
-				10% {
-					width: 8rem;
-					height: 10rem;
-				}
-				100% {
-					width: 16rem;
-					height: 20rem;
-				}
+		&-fog-1,
+		&-fog-2 {
+			position: absolute;
+			width: 300%;
+			height: 100%;
+			left: 0;
+			top: 0;
+		}
+		
+		&-fog-1 {
+			background: url('../img/fog-1.png') center/contain repeat-x;
+			animation: marquee 40s linear infinite reverse;
+		}
+
+		&-fog-2 {
+			background: url('../img/fog-2.png') center/contain repeat-x;
+			animation: marquee 40s linear infinite;
+		}
+
+		@keyframes marquee {
+			0% {
+				transform: translate3d(0, 0, 0);
+			}
+
+			100% {
+				transform: translate3d(-200vw, 0, 0);
+			}
+		}
+
+		@keyframes portal {
+			0% {
+				width: 0;
+				height: 0;
+			}
+
+			10% {
+				width: 8rem;
+				height: 10rem;
+			}
+
+			100% {
+				width: 16rem;
+				height: 20rem;
 			}
 		}
 	}
