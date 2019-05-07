@@ -5,43 +5,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.0/TweenMax.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../node_modules/materialize-css/dist/css/materialize.min.css">
     <title>Document</title>
 </head>
 
 <body>
 
-    <div class="game-holder" id="gameHolder">
-        <div class="header">
-            <h1><span>the</span>Aviator</h1>
-            <h2>fly it to the end</h2>
-            <div class="score" id="score">
-                <div class="score__content" id="level">
-                    <div class="score__label">level</div>
-                    <div class="score__value score__value--level" id="levelValue">1</div>
-                    <svg class="level-circle" id="levelCircle" viewbox="0 0 200 200">
-                        <circle id="levelCircleBgr" r="80" cx="100" cy="100" fill="none" stroke="#d1b790"
-                            stroke-width="24px" />
-                        <circle id="levelCircleStroke" r="80" cx="100" cy="100" fill="none" #f25346 stroke="#68c3c0"
-                            stroke-width="14px" stroke-dasharray="502" />
-                    </svg>
+    <!-- <div class="preloader">
+        <img src="img/angular.svg" alt="" width="500" height="500">
+    </div> -->
+
+    <ul id="slide-out" class="sidenav">
+        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+        <li><a href="#!">Second Link</a></li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger">
+        <div id="nav-icon" class="">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </a>
+    <div class="dotstyle dotstyle-hop">
+        <ul>
+            <li class="current nav-dot"><a href="javascript:void(0)">Home</a></li>
+            <li class="nav-dot"><a href="javascript:void(0)">Skills</a></li>
+            <li class="nav-dot"><a href="javascript:void(0)">Projects</a></li>
+            <li class="nav-dot"><a href="javascript:void(0)">Contact</a></li>
+        </ul>
+    </div>
+
+    <main>
+        <section class="home">
+            <div class="home__video">
+                <!-- <video>
+                    <source src="./assets/homeThumb.mp4" type="video/mp4">
+                </video> -->
+            </div>
+            <div class="home__title">
+                <h1>Hi, Im Rabin Shrestha.</h1>
+            </div>
+        </section>
+        <section class="skills">
+            <div class="skills__header">
+                <h2>My Skills</h2>
+                <div class="skills-info">
+                    <div class="chip">
+                        <img src="img/arrow_up.svg" alt="Contact Person">
+                        Full knowledge about it.
+                    </div>
+                    <div class="chip">
+                        <img src="img/arrow_up.svg" alt="Contact Person">
+                        A little too more knowledge about it.
+                    </div>
+                    <div class="chip">
+                        <img src="img/arrow_neutral.svg" alt="Contact Person">
+                        A little more knowledge about it.
+                    </div>
+                    <div class="chip">
+                        <img src="img/arrow_down.svg" alt="Contact Person">
+                        A little knowledge about it.
+                    </div>
                 </div>
-                <div class="score__content" id="dist">
-                    <div class="score__label">distance</div>
-                    <div class="score__value score__value--dist" id="distValue">000</div>
+                <div class="header-bottom-line"></div>
+            </div>
+            <div class="skills__distribution">
+                <div class="skills-front-core">
+                    <h2 class="skills-title">Core Web Technologies</h2>
+                    <div>
+                        <img src="./img/html5.svg" alt="" class="single-skill tooltipped" data-position="left"
+                            data-tooltip="HTML" data-level="up" width="50" height="50">
+                        <img src="./img/css-3.svg" alt="" class="single-skill tooltipped" data-position="top"
+                            data-tooltip="CSS" data-level="up" width="50" height="50">
+                        <img src="./img/javascript.svg" alt="" class="single-skill tooltipped" data-position="bottom"
+                            data-tooltip="Javascript" data-level="up" width="50" height="50">
+                        <img src="./img/web-components.svg" alt="" class="single-skill tooltipped" data-position="right"
+                            data-tooltip="Web Components" data-level="down" width="50" height="50">
+                    </div>
                 </div>
-                <div class="score__content" id="energy">
-                    <div class="score__label">energy</div>
-                    <div class="score__value score__value--energy" id="energyValue">
-                        <div class="energy-bar" id="energyBar"></div>
+                <div class="skills-front-framework">
+                    <h2 class="skills-title">Front End Frameworks</h2>
+                    <div>
+                        <img src="./img/bootstrap.svg" alt="" class="single-skill tooltipped" data-position="left"
+                            data-tooltip="Bootstrap" data-level="up" width="50" height="50">
+                        <img src="./img/material-ui.svg" alt="" class="single-skill tooltipped" data-position="top"
+                            data-tooltip="Material UI" data-level="neutral" width="50" height="50">
+                        <img src="./img/angular.svg" alt="" class="single-skill tooltipped" data-position="bottom"
+                            data-tooltip="Angular" data-level="up" width="50" height="50">
+                        <img src="./img/react.svg" alt="" class="single-skill tooltipped" data-position="right"
+                            data-tooltip="React" data-level="down" width="50" height="50">
+                    </div>
+                </div>
+                <div class="skills-back-all">
+                    <h2 class="skills-title">Back End Technologies</h2>
+                    <div>
+                        <img src="./img/ruby.svg" alt="" class="single-skill tooltipped" data-position="left"
+                            data-tooltip="Ruby" data-level="down" width="50" height="50">
+                        <img src="./img/ruby-on-rails.svg" alt="" class="single-skill tooltipped" data-position="top"
+                            data-tooltip="Ruby on rails" data-level="down" width="50" height="50">
+                        <img src="./img/nodejs.svg" alt="" class="single-skill tooltipped" data-position="bottom"
+                            data-tooltip="Nodejs" data-level="neutral" width="50" height="50">
+                        <img src="./img/express.svg" alt="" class="single-skill tooltipped" data-position="right"
+                            data-tooltip="Express" data-level="neutral" width="50" height="50">
+                    </div>
+                </div>
+                <div class="skills-others">
+                    <h2 class="skills-title">Other Technologies</h2>
+                    <div>
+                        <img src="./img/git.svg" alt="" class="single-skill tooltipped" data-position="left"
+                            data-tooltip="Git" data-level="up" width="50" height="50">
+                        <img src="./img/npm.svg" alt="" class="single-skill tooltipped" data-position="top"
+                            data-tooltip="Npm" data-level="up" width="50" height="50">
+                        <img src="./img/webpack.svg" alt="" class="single-skill tooltipped" data-position="bottom"
+                            data-tooltip="Webpack" data-level="neutral" width="50" height="50">
+                        <img src="./img/babel.svg" alt="" class="single-skill tooltipped" data-position="top"
+                            data-tooltip="Babel" data-level="up" width="50" height="50">
+                        <img src="./img/immutable.svg" alt="" class="single-skill tooltipped" data-position="bottom"
+                            data-tooltip="Immutable" data-level="neutral" width="50" height="50">
+                        <img src="./img/sass.svg" alt="" class="single-skill tooltipped" data-position="right"
+                            data-tooltip="Sass" data-level="up" width="50" height="50">
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="world" id="world"></div>
-        <div class="message message--replay" id="replayMessage">Click to Replay</div>
-        </div>
-    </div>
+        </section>
+        <section class="projects">
+            <div class="projects__header">
+                <h2>My Projects Showcase</h2>
+            </div>
+            <div class="projects__contents">
+                <div class="row">
+                    <div class="single-project col s12 m4">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-16by9">
+                                    <img src="img/angular.svg">
+                                </figure>
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i
+                                        class="material-icons">add</i></a>
+                            </div>
+                            <div class="card-content">
+                                <a href="">Reign the block</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-project col s12 m4">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-16by9">
+                                    <img src="img/angular.svg">
+                                </figure>
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i
+                                        class="material-icons">add</i></a>
+                            </div>
+                            <div class="card-content">
+                                <a href="">Reign the block</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-project col s12 m4">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-16by9">
+                                    <img src="img/angular.svg">
+                                </figure>
+                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i
+                                        class="material-icons">add</i></a>
+                            </div>
+                            <div class="card-content">
+                                <a href="">Reign the block</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="contact">
+            <div class="contact__header">
+                <h2>Contact Info</h2>
+            </div>
+            <div class="contact__form">
+                <form>
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">account_circle</i>
+                                    <input id="icon_prefix" type="text" class="validate">
+                                    <label for="icon_prefix">First Name</label>
+                                    <span class="helper-text" data-error="wrong" data-success="right">Helper text</span>
+                                </div>
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">mail</i>
+                                    <input id="icon_telephone" type="email" class="validate">
+                                    <label for="icon_telephone">Email Address</label>
+                                    <span class="helper-text" data-error="wrong" data-success="right">Helper text</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
 </body>
 
 </html>
