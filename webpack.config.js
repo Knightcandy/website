@@ -22,11 +22,11 @@ module.exports = {
                 }]
             },
             {
-                test: /\.(png|jpe?g)/i,
+                test: /\.(png|jpe?g|svg)/i,
                 use: [{
                         loader: "url-loader",
                         options: {
-                            name: "./img/[name].[ext]",
+                            name: "./img/[hash].[ext]",
                             limit: 10000
                         }
                     },
@@ -34,7 +34,18 @@ module.exports = {
                         loader: "img-loader"
                     }
                 ]
-            }, {
+            },
+            {
+                test: /\.(mp4|mp3|ogg)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        name: './assets/[name].[ext]',
+                        limit: 10000
+                    },
+                }],
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {

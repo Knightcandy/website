@@ -44,6 +44,12 @@
     "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
+    "@pixi/filter-twist": "^2.7.0",
+    "gsap": "^2.1.2",
+    "howler": "^2.1.2",
+    "materialize-css": "^1.0.0-rc.2",
+    "pixi-filters": "^2.7.1",
+    "pixi.js": "^5.0.0",
     "three": "^0.103.0"
   },
   "browserslist": [
