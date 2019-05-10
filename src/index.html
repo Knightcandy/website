@@ -24,17 +24,20 @@
         </div>
     </div>
 
-    <ul id="slide-out" class="sidenav">
-        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-        <li><a href="#!">Second Link</a></li>
-    </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger">
+    <div class="sidenav-group">
         <div id="nav-icon" class="">
             <span></span>
             <span></span>
             <span></span>
+            <a href="javascript:void(0)" class="floating-button-trigger"></a>
         </div>
-    </a>
+        <ul class="floating-buttons">
+            <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+            <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+            <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+        </ul>
+    </div>
 
     <div class="equaliser-container">
         <ol class="equaliser-column">
@@ -67,11 +70,6 @@
 
     <main>
         <section class="home">
-            <div class="home__video">
-                <!-- <video>
-                    <source src="./assets/homeThumb.mp4" type="video/mp4">
-                </video> -->
-            </div>
             <div class="home__title">
                 <h1>Hi, Im Rabin Shrestha.</h1>
             </div>
@@ -164,7 +162,7 @@
             </div>
             <div class="projects__contents">
                 <div class="row">
-                    <div class="single-project col s12 m4">
+                    <div class="single-project col s12 m5">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-16by9">
@@ -178,21 +176,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="single-project col s12 m4">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-16by9">
-                                    <img src="img/angular.svg">
-                                </figure>
-                                <a class="btn-floating halfway-fab waves-effect waves-light red"><i
-                                        class="material-icons">add</i></a>
-                            </div>
-                            <div class="card-content">
-                                <a href="">Reign the block</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="single-project col s12 m4">
+                    <div class="single-project col s12 m5">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-16by9">

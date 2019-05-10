@@ -8,8 +8,7 @@ const music = require("./assets/music" + randomNumber + ".ogg");
 import arrowUp from "./img/arrow_up.svg";
 import arrowNeutral from "./img/arrow_neutral.svg";
 import arrowDown from "./img/arrow_down.svg";
-
-import * as THREE from 'three';
+import smoke from "./img/smoke.png";
 
 import {
     Howl
@@ -17,10 +16,124 @@ import {
 
 import {
     TimelineMax,
-    Power2
+    Power2,
+    TweenLite
 } from "gsap/all";
 
+import * as THREE from 'three';
 
+var scene, sceneLight, portalLight, cam, renderer, clock, portalParticles = [],
+    smokeParticles = [];
+
+function initScene() {
+    scene = new THREE.Scene();
+
+    sceneLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    sceneLight.position.set(0, 0, 1);
+    scene.add(sceneLight);
+
+    portalLight = new THREE.PointLight(0x9900ff, 30, 600, 1.7);
+    portalLight.position.set(-20, 0, 150);
+    scene.add(portalLight);
+
+    cam = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 2.5, 25000);
+    cam.position.x = window.innerWidth / 1.5;
+    cam.position.z = 1000;
+    scene.add(cam);
+
+    renderer = new THREE.WebGLRenderer({
+        alpha: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+    particleSetup();
+
+    window.addEventListener('resize', function () {
+        var WIDTH = window.innerWidth,
+            HEIGHT = window.innerHeight;
+        renderer.setSize(WIDTH, HEIGHT);
+        cam.aspect = WIDTH / HEIGHT;
+        cam.updateProjectionMatrix();
+    });
+}
+
+function particleSetup() {
+    let loader = new THREE.TextureLoader();
+    loader.load(smoke, function (texture) {
+        let portalGeo = new THREE.PlaneBufferGeometry(150, 150);
+        let portalMaterial = new THREE.MeshStandardMaterial({
+            map: texture,
+            transparent: true
+        });
+        let smokeGeo = new THREE.PlaneBufferGeometry(400, 400);
+        let smokeMaterial = new THREE.MeshStandardMaterial({
+            map: texture,
+            transparent: true
+        });
+        for (let p = 800; p > 50; p--) {
+            let particle = new THREE.Mesh(portalGeo, portalMaterial);
+            particle.position.set(
+                0.25 * p * Math.cos((6 * p * Math.PI) / 180),
+                0.5 * p * Math.sin((6 * p * Math.PI) / 180),
+                0.1 * p
+            );
+            particle.rotation.z = Math.random() * 360;
+            TweenLite.from(particle.scale, 5, {
+                    x: 0.0001,
+                    y: 0.0001,
+                    z: 0.0001,
+                    ease: Bounce.easeIn
+                },
+                0.2);
+            TweenLite.from(particle.position, 5, {
+                    x: 0.0001,
+                    y: 0.0001,
+                    z: 0.0001,
+                    ease: Bounce.easeIn
+                },
+                0.2);
+            portalParticles.push(particle);
+            scene.add(particle);
+        }
+        for (let p = 0; p < 30; p++) {
+            let particle = new THREE.Mesh(smokeGeo, smokeMaterial);
+            particle.position.set(
+                Math.random() * 400 - 100,
+                Math.random() * 350 - 200,
+                25
+            );
+            particle.rotation.z = Math.random() * 360;
+            TweenLite.from(particle.scale, 3, {
+                x: 0.05,
+                y: 0.05,
+                z: 0.05,
+                ease: Bounce.easeIn,
+                delay: 2
+            });
+            particle.material.opacity = 0.6;
+            portalParticles.push(particle);
+            scene.add(particle);
+        }
+        clock = new THREE.Clock();
+        animate();
+    });
+}
+
+function animate() {
+    let delta = clock.getDelta();
+    portalParticles.forEach(p => {
+        p.rotation.z -= delta * 1.5;
+    });
+    smokeParticles.forEach(p => {
+        p.rotation.z -= delta * 0.2;
+    });
+    if (Math.random() > 0.9) {
+        portalLight.power = 350 + Math.random() * 500;
+    }
+    renderer.render(scene, cam);
+    requestAnimationFrame(animate);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -43,28 +156,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-
-    var sidenav = document.querySelectorAll('.sidenav');
-    var sidenavInstance = M.Sidenav.init(sidenav, {
-        onOpenStart: function (el) {
-            el.style.transform = "translateX(-105%) translateY(-50%)";
-        },
-        onOpenEnd: function (el) {
-            el.style.transform = "translateX(-50%) translateY(-50%)";
-        },
-        onCloseStart: function (el) {
-            el.style.transform = "translateX(-50%) translateY(-50%)";
-        },
-        onCloseEnd: function (el) {
-            el.style.transform = "translateX(-105%) translateY(-50%)";
-        }
-    });
-
     var navIcon = document.querySelector('#nav-icon');
-    navIcon.addEventListener('click', function () {
-        this.classList.toggle('moveSticks');
-        this.classList.toggle('open');
-    });
+    var floatingButtonTrigger = document.querySelector('.floating-button-trigger');
+    var floatingButtonContainer = document.querySelector('.floating-buttons');
+    floatingButtonTrigger.addEventListener('click', function () {
+        navIcon.classList.toggle('moveSticks');
+        navIcon.classList.toggle('open');
+        floatingButtonContainer.classList.toggle('showButtons');
+    })
+
 
     var soundEqualizer = document.querySelector('.equaliser-container');
     var soundEqualizerBars = document.querySelectorAll('.equaliser-container .equaliser-column');
@@ -107,7 +207,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function navIconTimeline() {
-        var Tween_navIcon = new TimelineMax();
+        var Tween_navIcon = new TimelineMax({
+            onComplete: () => {
+                // initScene();
+            }
+        });
         Tween_navIcon.to(
             navIcon,
             0.2, {
@@ -151,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 y: 0
             },
             0.9
-        );
+        )
         return Tween_dotIcons;
     }
 
@@ -194,8 +298,10 @@ document.addEventListener('DOMContentLoaded', function () {
             homeText,
             0.2, {
                 autoAlpha: 1,
-                ease: Power4.ease
-            }, 0.5
+                // scale: 1,
+                x: "auto",
+                ease: SlowMo.ease.config(0.7, 0.7, false)
+            }, 0.3
         )
         return Tween_hometext;
     }
@@ -206,8 +312,10 @@ document.addEventListener('DOMContentLoaded', function () {
             homeText,
             0.2, {
                 autoAlpha: 0,
-                ease: Power4.ease
-            }, 0
+                // scale: 0.8,
+                x: -(window.innerWidth / 3),
+                ease: Bounce.easeOut
+            }, 0.2
         )
         return Tween_hometext;
     }
@@ -246,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let splitText = [...text].map(el => {
             let separatextContainer = document.createElement('div');
             separatextContainer.classList.add('single-text');
-            separatextContainer.innerHTML = el;
+            el !== ' ' ? separatextContainer.innerHTML = el : separatextContainer.innerHTML = ' - ';
             return separatextContainer;
         });
         element.innerHTML = '';
@@ -290,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var Tween_skillTags = new TimelineMax();
         Tween_skillTags.staggerTo(
             skillTags,
-            0.2, {
+            0.1, {
                 y: -100,
                 autoAlpha: 0,
                 ease: Power2.easeIn
@@ -318,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var Tween_skillLine = new TimelineMax();
         Tween_skillLine.staggerTo(
             skillLine,
-            0.2, {
+            0.1, {
                 scale: 0,
                 autoAlpha: 0,
                 ease: Power2.easeIn
@@ -359,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function () {
             [...titleEl.children].forEach(titleChar => {
                 Tween_skillLabels.to(
                     titleChar,
-                    0.2, {
+                    0.1, {
                         opacity: 0,
                         scale: .1,
                         x: randomVal(-200, 200),
@@ -374,25 +482,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function skillListsTimelineEntry() {
         var Tween_skillLists = new TimelineMax();
-        Tween_skillLists.to(
-            skillIcons,
-            0.4, {
-                autoAlpha: 1,
-                ease: Power4.easeIn
-            }, 0.5
-        )
+        skillIcons.forEach(el => {
+            Tween_skillLists.to(
+                el,
+                0.4, {
+                    autoAlpha: 1,
+                    ease: Power4.easeIn
+                }, 0.5
+            )
+        })
         return Tween_skillLists;
     }
 
     function skillListsTimelineExit() {
         var Tween_skillLists = new TimelineMax();
-        Tween_skillLists.to(
-            skillIcons,
-            0.2, {
-                autoAlpha: 0,
-                ease: Power4.easeIn
-            }, 0
-        )
+        skillIcons.forEach(el => {
+            Tween_skillLists.to(
+                el,
+                0.1, {
+                    autoAlpha: 0,
+                    ease: Power4.easeIn
+                }, 0
+            )
+        })
         return Tween_skillLists;
     }
 
