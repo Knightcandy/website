@@ -248,7 +248,7 @@ body {
 		top: 15%;
 		right: 10%;
 		position: fixed;
-		z-index: 500;
+		z-index: 600;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -371,9 +371,9 @@ body {
 		width: 30px;
 		height: 24px;
 		position: fixed;
-		z-index: 500;
+		z-index: 2000;
 		top: 2rem;
-		left: 5%;
+		left: 3rem;
 		transform: rotate(0deg);
 		transition: .5s ease-in-out;
 		cursor: pointer;
@@ -390,7 +390,7 @@ body {
 			position: absolute;
 			height: 4px;
 			width: 100%;
-			background: #fff;
+			background: #9900ff;
 			border-radius: 16px;
 			opacity: 1;
 			left: 0;
@@ -466,9 +466,9 @@ body {
 
 	.floating-buttons {
 		position: absolute;
-		z-index: 500;
+		z-index: 2000;
 		top: 6rem;
-		left: 5%;
+		left: 2.5rem;
 
 		li {
 			margin-bottom: 50%;
@@ -525,8 +525,9 @@ body {
 					text-indent: -999em;
 					cursor: pointer;
 					position: absolute;
-					border: 2px solid #fff;
+					border: 2px solid #9900ff;
 					background: transparent;
+					transition: 0.2s ease-in;
 
 					&::after {
 						content: '';
@@ -536,17 +537,17 @@ body {
 						left: 0;
 						border-radius: 50%;
 						visibility: hidden;
-						background: #141415f0;
+						background: #fff;
 						opacity: 0;
-						transform: rotate(-100deg);
-						transform-origin: -200% 50%;
+						transform: rotate(120deg);
+						transform-origin: -300% -50%;
 						transition: transform 0.3s ease 0.3s, opacity 0.3s ease, visibility 0s 0.3s ease;
 					}
 				}
 
 				&.current {
-					width: 12px;
-					height: 12px;
+					width: 14px;
+					height: 14px;
 
 					a {
 						&::after {
@@ -677,7 +678,7 @@ body {
 					position: relative;
 					margin: 0.5rem 1rem;
 					margin-top: 0;
-					padding-top: 0.5rem;
+					padding-top: 1rem;
 					animation: float 4s linear infinite;
 
 					background-position: top center;
@@ -749,10 +750,43 @@ body {
 			&__contents {
 
 				.single-project {
+					width: 20rem;
+					&:nth-child(1){
+						transform: scaleX(0);
+					}
+					&:nth-child(2){
+						transform: scaleY(0);
+					}
 					.card {
 						border-radius: 3px;
 
 						&-image {
+							.image {
+								overflow: hidden;
+								img{
+									transition: .3s linear;
+									&:nth-child(1){
+										top: 0;
+										left: 0;
+									}
+									&:nth-child(2){
+										top: 100%;
+										left: 100%;
+									}
+								}
+								&:hover {
+									img {
+										&:nth-child(1){
+											top: 100%;
+											left: -100%;
+										}
+										&:nth-child(2){
+											top: 0;
+											left: 0;
+										}
+									}
+								}
+							}
 							.btn-floating {
 								width: 25px;
 								height: 25px;

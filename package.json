@@ -26,6 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
+    "@fortawesome/fontawesome-free": "^5.8.2",
     "autoprefixer": "^9.5.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
@@ -48,6 +49,7 @@
     "gsap": "^2.1.2",
     "howler": "^2.1.2",
     "materialize-css": "^1.0.0-rc.2",
+    "materialize-social": "^1.0.3",
     "pixi-filters": "^2.7.1",
     "pixi.js": "^5.0.0",
     "three": "^0.103.0"

@@ -579,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var skillTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
-        onComplete: function(){
+        onComplete: function () {
             skillSection.style.display = 'none';
         }
     }).add(skillListsTimelineExit()).add(skillLabelsTimelineExit()).add(skillTagsTimelineExit()).add(skillLineTimelineExit());
@@ -589,15 +589,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Projects Section Animation and Functions
     var projectSection = document.querySelector("body main section.projects");
     var projectSingle = document.querySelectorAll(".single-project");
+    var firstProject = projectSingle[0];
+    var lastProject = projectSingle[1];
 
     function projectListsTimelineEntry() {
         var Tween_projectLists = new TimelineMax();
         Tween_projectLists.to(
-            projectSingle,
-            0.4, {
-                autoAlpha: 1,
+            firstProject,
+            0.5, {
+                scaleX: 1,
                 ease: Power4.easeIn
-            }, 0.5
+            }, 0.3
+        ).to(
+            lastProject,
+            0.5, {
+                scaleY: 1,
+                ease: Power4.easeIn
+            }, 0.2
         )
         return Tween_projectLists;
     }
@@ -605,25 +613,31 @@ document.addEventListener('DOMContentLoaded', function () {
     function projectListsTimelineExit() {
         var Tween_projectLists = new TimelineMax();
         Tween_projectLists.to(
-            projectSingle,
+            lastProject,
             0.3, {
-                autoAlpha: 0,
-                ease: Power4.easeIn
-            }, 0
+                scaleY: 0,
+                ease: Power1.easeIn
+            }, 0.2
+        ).to(
+            firstProject,
+            0.3, {
+                scaleX: 0,
+                ease: Power1.easeIn
+            }, 0.2
         )
         return Tween_projectLists;
     }
 
     var projectTimelineEntry = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
-        onStart: function(){
+        onStart: function () {
             projectSection.style.display = 'block';
         }
     }).add(projectListsTimelineEntry());
 
     var projectTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
-        onComplete: function(){
+        onComplete: function () {
             projectSection.style.display = 'none';
         }
     }).add(projectListsTimelineExit());
@@ -664,14 +678,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var contactTimelineEntry = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
-        onStart: function(){
+        onStart: function () {
             contactSection.style.display = 'block';
         }
     }).add(contactFormTimelineEntry());
 
     var contactTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
-        onComplete: function(){
+        onComplete: function () {
             contactSection.style.display = 'none';
         }
     }).add(contactFormTimelineExit());
@@ -681,8 +695,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Navigation Handler
     let navPages = document.querySelectorAll("main section");
-    let NavDots = document.querySelectorAll(".nav-dot");
-    let activeNavDot = document.querySelector(".nav-dot.current");
 
     function pageIndexHandler() {
         let currentPageIndex = 0;
@@ -739,6 +751,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //Init time to stop rapid navigation between paes
         let timeNow = new Date().getTime();
+        let navDots = document.querySelectorAll('.dotstyle li');
+        let activeDot = document.querySelector('.dotstyle li.current');
+        activeDot.classList.remove('current');
+        navDots[scrolledPageIndex].classList.add('current');
 
         //Pause current nav animation to show another nav animation
         pauseCurrentSectionAnimation(currentPageIndex);
@@ -746,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //Smooth transition to respective page
         setTimeout(() => {
             navPages[scrolledPageIndex].scrollIntoView('smooth');
-        }, 800);
+        }, 1200);
 
         //Start Scrolled navigation animation
         navigationAnimations[scrolledPageIndex][0].restart().delay(0.7);
@@ -757,11 +773,13 @@ document.addEventListener('DOMContentLoaded', function () {
         lastAnimation = timeNow;
     }
 
-    // [...NavDots].forEach(el => el.addEventListener('click', (e) => {
-    //     console.log(this, e);
-    // }))
 
-
+    let dotNavigation = document.querySelectorAll('.dotstyle li a');
+    [...dotNavigation].forEach((el, index) => el.addEventListener('click', (e) => {
+        let pageToNavigate = index;
+        scrolledPageIndex = pageIndex.set(pageToNavigate);
+        navigatePages(scrolledPageIndex, currentPageIndex);
+    }));
 
     window.addEventListener('wheel', function (event) {
         // Get Scroll Movement Up or Down
