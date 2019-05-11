@@ -5,10 +5,12 @@ import M from 'materialize-css';
 const randomNumber = Math.floor(Math.random() * 5);
 const music = require("./assets/music" + randomNumber + ".ogg");
 
-import arrowUp from "./img/arrow_up.svg";
-import arrowNeutral from "./img/arrow_neutral.svg";
-import arrowDown from "./img/arrow_down.svg";
+// import arrowUp from "./img/arrow_up.svg";
+// import arrowNeutral from "./img/arrow_neutral.svg";
+// import arrowDown from "./img/arrow_down.svg";
 import smoke from "./img/smoke.png";
+import darkSky from "./img/darkSky.png";
+import cloudDisplacement from "./img/cloudDisplacement.jpg";
 
 import {
     Howl
@@ -21,6 +23,11 @@ import {
 } from "gsap/all";
 
 import * as THREE from 'three';
+
+import * as PIXI from 'pixi.js';
+import {
+    TwistFilter
+} from '@pixi/filter-twist';
 
 var scene, sceneLight, portalLight, cam, renderer, clock, portalParticles = [],
     smokeParticles = [];
@@ -37,7 +44,7 @@ function initScene() {
     scene.add(portalLight);
 
     cam = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 2.5, 25000);
-    cam.position.x = window.innerWidth / 1.5;
+    cam.position.x = 500;
     cam.position.z = 1000;
     scene.add(cam);
 
@@ -48,14 +55,6 @@ function initScene() {
 
     document.body.appendChild(renderer.domElement);
     particleSetup();
-
-    window.addEventListener('resize', function () {
-        var WIDTH = window.innerWidth,
-            HEIGHT = window.innerHeight;
-        renderer.setSize(WIDTH, HEIGHT);
-        cam.aspect = WIDTH / HEIGHT;
-        cam.updateProjectionMatrix();
-    });
 }
 
 function particleSetup() {
@@ -135,6 +134,62 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+
+// PIXIJS 
+var app, image, displacementSprite, displacementFilter;
+var pixiCanvas = document.querySelector('.pixiCanvas');
+
+function initPIXI() {
+    app = new PIXI.Application({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        view: pixiCanvas
+    });
+    document.body.appendChild(app.view);
+
+    image = new PIXI.Sprite.from(darkSky);
+    image.width = app.screen.width;
+    image.height = app.screen.height;
+    app.stage.addChild(image);
+
+    displacementSprite = new PIXI.Sprite.from(cloudDisplacement);
+    displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
+    displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+    let twistFilter = new TwistFilter(250, 7, 4);
+    twistFilter.offset = [window.innerWidth / 2, window.innerHeight / 2];
+    app.stage.addChild(displacementSprite);
+    app.stage.filters = [displacementFilter, twistFilter];
+
+    app.renderer.view.style.transform = 'scale(1.02)';
+    displacementSprite.scale.x = 3;
+    displacementSprite.scale.y = 3;
+    animatePIXI();
+}
+
+function animatePIXI() {
+    displacementSprite.x += 3;
+    displacementSprite.y += 3;
+    requestAnimationFrame(animatePIXI);
+}
+
+
+
+let mainContainers = document.querySelectorAll('body main section');
+window.addEventListener('resize', function () {
+    var WIDTH = window.innerWidth,
+        HEIGHT = window.innerHeight;
+    renderer.setSize(WIDTH, HEIGHT);
+    cam.aspect = WIDTH / HEIGHT;
+    cam.updateProjectionMatrix();
+
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+    image.scale.set((window.innerWidth / 1366) / (window.innerHeight / 768));
+
+    // document.querySelector('body main').style.height = HEIGHT + 'px';
+    // [...mainContainers].forEach(el=> el.style.height = HEIGHT + 'px');
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
     var sound = new Howl({
@@ -209,7 +264,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function navIconTimeline() {
         var Tween_navIcon = new TimelineMax({
             onComplete: () => {
-                // initScene();
+                initScene();
+                initPIXI();
             }
         });
         Tween_navIcon.to(
@@ -290,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //Home Page Animations and Functions
+    let homeSection = document.querySelector('body main section.home');
     let homeText = document.querySelector(".home .home__title");
 
     function homeTextTimelineEntry() { //Timeline For Enter Home Page Animation
@@ -299,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
             0.2, {
                 autoAlpha: 1,
                 // scale: 1,
-                x: "auto",
+                x: 0,
                 ease: SlowMo.ease.config(0.7, 0.7, false)
             }, 0.3
         )
@@ -323,6 +380,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var homeTimelineEntry = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
         onStart: function () {
+            homeSection.style.display = 'block';
             homeText.classList.add("typewriter");
         }
     }).add(homeTextTimelineEntry());
@@ -332,12 +390,14 @@ document.addEventListener('DOMContentLoaded', function () {
         paused: true,
         onComplete: function () {
             homeText.classList.remove("typewriter");
+            homeSection.style.display = 'none';
         }
     }).add(homeTextTimelineExit());
 
 
 
     // Skills Section Animation and Functions
+    let skillSection = document.querySelector('body main section.skills');
     var skillIcons = document.querySelectorAll(".single-skill");
     var skillTags = document.querySelectorAll(".skills-info .chip");
     var skillLine = document.querySelectorAll(".header-bottom-line");
@@ -346,7 +406,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Show tooltips of Skills when hovered
     var tooltipInstance = M.Tooltip.init(svgTooltips, {
-        transitionMovement: 8
+        transitionMovement: 1,
+        margin: 1
     });
 
     let textSplit = (element) => {
@@ -511,17 +572,22 @@ document.addEventListener('DOMContentLoaded', function () {
     var skillTimelineEntry = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
         onStart: function () {
+            skillSection.style.display = 'block';
             randomAnimationDelay([...skillIcons]);
         }
     }).add(skillListsTimelineEntry()).add(skillLabelsTimelineEntry()).add(skillTagsTimelineEntry()).add(skillLineTimelineEntry());
 
     var skillTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
-        paused: true
+        paused: true,
+        onComplete: function(){
+            skillSection.style.display = 'none';
+        }
     }).add(skillListsTimelineExit()).add(skillLabelsTimelineExit()).add(skillTagsTimelineExit()).add(skillLineTimelineExit());
 
 
 
     // Projects Section Animation and Functions
+    var projectSection = document.querySelector("body main section.projects");
     var projectSingle = document.querySelectorAll(".single-project");
 
     function projectListsTimelineEntry() {
@@ -549,18 +615,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var projectTimelineEntry = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
-        paused: true
+        paused: true,
+        onStart: function(){
+            projectSection.style.display = 'block';
+        }
     }).add(projectListsTimelineEntry());
 
     var projectTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
-        paused: true
+        paused: true,
+        onComplete: function(){
+            projectSection.style.display = 'none';
+        }
     }).add(projectListsTimelineExit());
 
 
 
 
     // Contact Section Animation and Functions
-    var contactForm = document.querySelectorAll(".contact__form");
+    var contactSection = document.querySelector("body main section.contact");
+    var contactForm = document.querySelectorAll(".contact__header");
 
     function contactFormTimelineEntry() {
         var Tween_contactForm = new TimelineMax();
@@ -590,11 +663,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var contactTimelineEntry = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
-        paused: true
+        paused: true,
+        onStart: function(){
+            contactSection.style.display = 'block';
+        }
     }).add(contactFormTimelineEntry());
 
     var contactTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
-        paused: true
+        paused: true,
+        onComplete: function(){
+            contactSection.style.display = 'none';
+        }
     }).add(contactFormTimelineExit());
 
 

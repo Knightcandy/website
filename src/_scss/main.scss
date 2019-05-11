@@ -57,10 +57,14 @@ figure.image {
 }
 
 canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 500;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 500;
+
+	&.pixiCanvas {
+		z-index: 300;
+	}
 }
 
 body {
@@ -73,6 +77,8 @@ body {
 		align-items: center;
 		font-size: 0.8rem;
 		letter-spacing: 1px;
+		min-height: 10px;
+		padding: 4px 8px;
 	}
 
 	.preloader {
@@ -91,7 +97,8 @@ body {
 			left: 0;
 			background-color: #9900ff;
 			z-index: 1100;
-			animation: suckedIn_general 0.8s cubic-bezier(0.04, 1.62, 0.99, -0.41) 0.5s forwards;
+			animation: suckedIn_general 0.8s linear 0.5s forwards;
+			// animation: suckedIn_general 0.8s cubic-bezier(0.04, 1.62, 0.99, -0.41) 0.5s forwards;
 			transform-origin: center;
 		}
 
@@ -101,7 +108,8 @@ body {
 			width: 50%;
 			height: 50%;
 			background-color: #9900ff;
-			animation: suckedIn_child 0.8s cubic-bezier(0.04, 1.62, 0.99, -0.41) 0.5s forwards;
+			animation: suckedIn_child 0.8s linear 0.5s forwards;
+			// animation: suckedIn_child 0.8s cubic-bezier(0.04, 1.62, 0.99, -0.41) 0.5s forwards;
 		}
 
 		&-background-right {
@@ -564,10 +572,10 @@ body {
 			height: 100vh;
 			overflow: hidden;
 			z-index: 600;
+			display: none;
 		}
 
 		.home {
-
 			&__title {
 				opacity: 0;
 				position: absolute;
@@ -586,13 +594,18 @@ body {
 		.skills {
 			position: relative;
 
+			&-container {
+				position: absolute;
+				top: 50%;
+				left: 65%;
+				transform: translate(-50%, -50%);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
 			&__header {
 				padding-bottom: 1rem;
-				position: absolute;
-				top: 10%;
-				left: 60%;
-				z-index: 50;
-				transform: translate(-50%, -50%);
 				text-align: center;
 
 				h2 {
@@ -630,11 +643,6 @@ body {
 
 			&__distribution {
 				margin-top: 0.5rem;
-				position: absolute;
-				top: 50%;
-				left: 60%;
-				z-index: 50;
-				transform: translate(-50%, -50%);
 
 				.skills-title {
 					display: flex;
@@ -664,10 +672,12 @@ body {
 
 				img {
 					opacity: 0;
+					width: 2.5rem;
+					height: 2.5rem;
 					position: relative;
 					margin: 0.5rem 1rem;
 					margin-top: 0;
-					padding-top: 1rem;
+					padding-top: 0.5rem;
 					animation: float 4s linear infinite;
 
 					background-position: top center;
@@ -692,7 +702,7 @@ body {
 						}
 
 						25% {
-							transform: translatey(-10px) scale(0.8);
+							transform: translatey(-8px) scale(0.8);
 						}
 
 						50% {
@@ -700,7 +710,7 @@ body {
 						}
 
 						75% {
-							transform: translatey(10px) scale(0.8);
+							transform: translatey(8px) scale(0.8);
 						}
 
 						100% {
@@ -719,12 +729,17 @@ body {
 		.projects {
 			position: relative;
 
-			&__header {
+			&-container{
 				position: absolute;
-				top: 10%;
-				left: 60%;
-				z-index: 50;
+				top: 50%;
+				left: 65%;
 				transform: translate(-50%, -50%);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			&__header {
 
 				h2 {
 					font-size: 1.5rem;
@@ -732,12 +747,6 @@ body {
 			}
 
 			&__contents {
-				position: absolute;
-				top: 50%;
-				left: 60%;
-				width: 50%;
-				z-index: 50;
-				transform: translate(-50%, -50%);
 
 				.single-project {
 					.card {
