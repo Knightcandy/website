@@ -1,16 +1,16 @@
-// import materialize from 'materialize-css/dist/css/materialize.min.css';
+import "materialize-social/materialize-social.css";
 import style from "./_scss/main.scss";
 import M from 'materialize-css';
 
-const randomNumber = Math.floor(Math.random() * 5);
+const randomNumber = Math.floor(Math.random() * 6);
 const music = require("./assets/music" + randomNumber + ".ogg");
+console.log(music);
 
-// import arrowUp from "./img/arrow_up.svg";
-// import arrowNeutral from "./img/arrow_neutral.svg";
-// import arrowDown from "./img/arrow_down.svg";
 import smoke from "./img/smoke.png";
 import darkSky from "./img/darkSky.png";
 import cloudDisplacement from "./img/cloudDisplacement.jpg";
+
+import '@fortawesome/fontawesome-free/js/all.js'
 
 import {
     Howl
@@ -19,9 +19,13 @@ import {
 import {
     TimelineMax,
     Power2,
-    TweenLite
+    TweenLite,
+    Elastic,
+    Bounce,
+    CSSPlugin
 } from "gsap/all";
-
+const gsapPlugins = [TimelineMax, Power2, TweenLite, Elastic, Bounce, CSSPlugin];
+// console.log('tween',TimelineMax, Power2, TweenLite, Elastic, Bounce, CSSPlugin);
 import * as THREE from 'three';
 
 import * as PIXI from 'pixi.js';
@@ -192,25 +196,6 @@ window.addEventListener('resize', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    var sound = new Howl({
-        src: [music],
-        volume: 0.2,
-        loop: true,
-        onend: function () {
-            soundEqualizerPauseLine.classList.remove("inactive");
-            soundEqualizerBars.forEach(el => el.classList.add("inactive"));
-        },
-        onpause: function () {
-            soundEqualizerPauseLine.classList.remove("inactive");
-            soundEqualizerBars.forEach(el => el.classList.add("inactive"));
-        },
-        onplay: function () {
-            soundEqualizerPauseLine.classList.add("inactive");
-            soundEqualizerBars.forEach(el => el.classList.remove("inactive"));
-        }
-    });
-
-
     var navIcon = document.querySelector('#nav-icon');
     var floatingButtonTrigger = document.querySelector('.floating-button-trigger');
     var floatingButtonContainer = document.querySelector('.floating-buttons');
@@ -218,19 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
         navIcon.classList.toggle('moveSticks');
         navIcon.classList.toggle('open');
         floatingButtonContainer.classList.toggle('showButtons');
-    })
-
-
-    var soundEqualizer = document.querySelector('.equaliser-container');
-    var soundEqualizerBars = document.querySelectorAll('.equaliser-container .equaliser-column');
-    var soundEqualizerButton = document.querySelector('.equaliser-container button');
-    var soundEqualizerPauseLine = document.querySelector('.equaliser-container .no-sound');
-    soundEqualizerButton.addEventListener('click', () => {
-        if (sound.playing(sound)) {
-            sound.pause();
-        } else {
-            sound.play();
-        }
     })
 
     var dotIcons = document.querySelectorAll('.dotstyle ul li');
@@ -315,6 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return Tween_dotIcons;
     }
 
+    
+    var soundEqualizer = document.querySelector('.equaliser-container');
     function soundEqualizerTimeline() {
         var Tween_sound = new TimelineMax();
         Tween_sound.to(
@@ -329,15 +303,45 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function playSound() {
+        var soundEqualizerBars = document.querySelector('.equaliser-container .sound');
+        var soundEqualizerButton = document.querySelector('.equaliser-container button');
+        var soundEqualizerPauseLine = document.querySelector('.equaliser-container .no-sound');
+
+        var sound = new Howl({
+            src: [music],
+            html5: true,
+            volume: 0.1,
+            onend: function () {
+                soundEqualizerPauseLine.classList.remove("inactive");
+                soundEqualizerBars.classList.add("inactive");
+            },
+            onpause: function () {
+                soundEqualizerPauseLine.classList.remove("inactive");
+                soundEqualizerBars.classList.add("inactive");
+            },
+            onplay: function () {
+                soundEqualizerTimeline().play();
+                soundEqualizerPauseLine.classList.add("inactive");
+                soundEqualizerBars.classList.remove("inactive");
+            }
+        });
         sound.play();
-        soundEqualizerTimeline().play();
-        document.removeEventListener('mouseover', playSound);
+
+        document.removeEventListener('click', playSound);
+
+        soundEqualizerButton.addEventListener('click', () => {
+            if (sound.playing(sound)) {
+                sound.pause();
+            } else {
+                sound.play();
+            }
+        })
     }
     var InitTimelineEntry = new TimelineMax({
         paused: true,
         onComplete: function () {
             homeTimelineEntry.play();
-            // document.addEventListener('mouseover', playSound);
+            document.addEventListener('click', playSound);
         }
     }).add(preloaderTimeline()).add(navIconTimeline()).add(dotIconsTimeline());
 
@@ -398,6 +402,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Skills Section Animation and Functions
     let skillSection = document.querySelector('body main section.skills');
+    let skillHeader = document.querySelector('.skills__header');
     var skillIcons = document.querySelectorAll(".single-skill");
     var skillTags = document.querySelectorAll(".skills-info .chip");
     var skillLine = document.querySelectorAll(".header-bottom-line");
@@ -541,6 +546,32 @@ document.addEventListener('DOMContentLoaded', function () {
         return Tween_skillLabels;
     }
 
+    function skillHeaderTimelineEntry() {
+        var Tween_skillHeader = new TimelineMax();
+        Tween_skillHeader.from(
+            skillHeader,
+            0.4, {
+                scale: 0,
+                autoAlpha: 0,
+                ease: Power4.easeIn
+            }, 0.2
+        )
+        return Tween_skillHeader;
+    }
+
+    function skillHeaderTimelineExit() {
+        var Tween_skillHeader = new TimelineMax();
+        Tween_skillHeader.to(
+            skillHeader,
+            0.4, {
+                scale: 0,
+                autoAlpha: 0,
+                ease: Power4.easeIn
+            }, 0.2
+        )
+        return Tween_skillHeader;
+    }
+
     function skillListsTimelineEntry() {
         var Tween_skillLists = new TimelineMax();
         skillIcons.forEach(el => {
@@ -575,22 +606,49 @@ document.addEventListener('DOMContentLoaded', function () {
             skillSection.style.display = 'block';
             randomAnimationDelay([...skillIcons]);
         }
-    }).add(skillListsTimelineEntry()).add(skillLabelsTimelineEntry()).add(skillTagsTimelineEntry()).add(skillLineTimelineEntry());
+    }).add(skillHeaderTimelineEntry()).add(skillListsTimelineEntry()).add(skillLabelsTimelineEntry()).add(skillTagsTimelineEntry()).add(skillLineTimelineEntry());
 
     var skillTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
         onComplete: function () {
             skillSection.style.display = 'none';
         }
-    }).add(skillListsTimelineExit()).add(skillLabelsTimelineExit()).add(skillTagsTimelineExit()).add(skillLineTimelineExit());
+    }).add(skillHeaderTimelineExit()).add(skillListsTimelineExit()).add(skillLabelsTimelineExit()).add(skillTagsTimelineExit()).add(skillLineTimelineExit());
 
 
 
     // Projects Section Animation and Functions
     var projectSection = document.querySelector("body main section.projects");
+    var projectHeader = document.querySelector(".projects__header");
     var projectSingle = document.querySelectorAll(".single-project");
     var firstProject = projectSingle[0];
     var lastProject = projectSingle[1];
+
+    function projectHeaderTimelineEntry() {
+        var Tween_projectHeader = new TimelineMax();
+        Tween_projectHeader.from(
+            projectHeader,
+            0.4, {
+                scale: 0,
+                autoAlpha: 0,
+                ease: Power4.easeIn
+            }, 0.2
+        )
+        return Tween_projectHeader;
+    }
+
+    function projectHeaderTimelineExit() {
+        var Tween_projectHeader = new TimelineMax();
+        Tween_projectHeader.to(
+            projectHeader,
+            0.4, {
+                scale: 0,
+                autoAlpha: 0,
+                ease: Power4.easeIn
+            }, 0.2
+        )
+        return Tween_projectHeader;
+    }
 
     function projectListsTimelineEntry() {
         var Tween_projectLists = new TimelineMax();
@@ -633,33 +691,42 @@ document.addEventListener('DOMContentLoaded', function () {
         onStart: function () {
             projectSection.style.display = 'block';
         }
-    }).add(projectListsTimelineEntry());
+    }).add(projectHeaderTimelineEntry()).add(projectListsTimelineEntry());
 
     var projectTimelineExit = new TimelineMax({ //Group Multiple HomeEntry Timelines and Custom Effects
         paused: true,
         onComplete: function () {
             projectSection.style.display = 'none';
         }
-    }).add(projectListsTimelineExit());
+    }).add(projectHeaderTimelineExit()).add(projectListsTimelineExit());
 
 
 
 
     // Contact Section Animation and Functions
     var contactSection = document.querySelector("body main section.contact");
-    var contactForm = document.querySelectorAll(".contact__header");
+    var contactForm = document.querySelector(".contact__header");
+    var contactUFO = document.querySelector(".contact .ufo");
 
     function contactFormTimelineEntry() {
         var Tween_contactForm = new TimelineMax();
-        Tween_contactForm.staggerFrom(
+        Tween_contactForm.from(
             contactForm,
             0.5, {
                 y: 100,
                 autoAlpha: 0,
                 repeat: 2,
                 yoyo: true,
-                ease: Sine
+                ease: Power1.easeIn
             }, 0.1
+        ).from(
+            contactUFO,
+            0.2, {
+                x: 500,
+                autoAlpha: 0,
+                ease: Power1.easeIn
+            },
+            0.2
         )
         return Tween_contactForm;
     }
@@ -670,8 +737,16 @@ document.addEventListener('DOMContentLoaded', function () {
             contactForm,
             0.3, {
                 autoAlpha: 0,
-                ease: Power4.easeOut
-            }, 0
+                ease: Power1.easeOut
+            }, 0.1
+        ).to(
+            contactUFO,
+            0.3, {
+                x: 500,
+                autoAlpha: 0,
+                ease: Power1.easeOut
+            },
+            0.1
         )
         return Tween_contactForm;
     }

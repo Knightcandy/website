@@ -60,7 +60,19 @@ module.exports = {
                     "postcss-loader",
                     "sass-loader"
                 ]
-            }
+            },
+            {
+              test: /\.css$/,
+              use: ['css-loader']
+            },
+            {
+                test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: 'url-loader',
+            },
+            {
+                test: /\.(ttf|eot)(\?[\s\S]+)?$/,
+                use: 'url-loader',
+            },
         ]
     }
 };
