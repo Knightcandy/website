@@ -18,7 +18,7 @@ npm webpack --mode production
 ## References
 
 ### Greensock
-  [Greensock](https://greensock.com/) - Ultra high-performance, professional-grade animation for the modern web
-  [Three](https://threejs.org/) - A 3D library to get 3D content on a webpage
-  [Pixi](https://www.pixijs.com/) - The fastest, most flexible 2D WebGL renderer
-  [Howler](https://howlerjs.com/) - Audio library for the modern web
+  [Greensock](https://greensock.com/) - Ultra high-performance, professional-grade animation for the modern web  
+  [Three](https://threejs.org/) - A 3D library to get 3D content on a webpage  
+  [Pixi](https://www.pixijs.com/) - The fastest, most flexible 2D WebGL renderer  
+  [Howler](https://howlerjs.com/) - Audio library for the modern web  
